@@ -8,6 +8,15 @@ import jakarta.persistence.Id;
 @Entity
 public class ContainerEvent {
 
+	public ContainerEvent(){
+
+	}
+
+	public ContainerEvent(String name, String eventSource){
+		this.name = name;
+		this.eventSource=eventSource;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

@@ -27,13 +27,13 @@ public class MSRestController {
    }
 
 
-    @PostMapping("/events")
+    @PostMapping("/events/")
     public void addEvent(@RequestBody ContainerEvent containerEvent) {
       eventRepository.save(containerEvent);
 
     }
 
-    @GetMapping("/events")
+    @GetMapping("/events/")
     public List<ContainerEvent> getAllContainerEvent() {
        return eventRepository.findAll();
     }

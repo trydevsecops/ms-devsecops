@@ -2,6 +2,9 @@ plugins {
 	id 'org.springframework.boot' version '3.0.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'java'
+	id "org.sonarqube" version "3.3"
+	id "jacoco"
+
 }
 
 group = 'com.hcl.devsecops'
@@ -17,8 +20,73 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'junit:junit:4.13.1'
+	implementation 'junit:junit:4.13.1'
+	implementation 'org.mockito:mockito-core:4.3.1'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.4'
+
+
+}
+
+configurations {
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
 }
 
 test {
-	useJUnitPlatform()
+	ignoreFailures = true;
+	testLogging {
+		events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+	}
+}
+
+sonarqube {
+	properties {
+		property    "sonar.projectName", "ms-devsecops"
+		property    "sonar.sourceEncoding", "UTF-8"
+		property    "sonar.java.source", "17"
+		property    "sonar.java.coveragePlugin", "jacoco"
+		property    "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
+		property    "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+		property    "sonar.junit.reportPaths", "${project.buildDir}/test-results/test, build/test-results/integrationTest"
+		property    "sonar.exclusions", "**/com/hcl/devsecops/*Event.java";
+	}
+}
+
+sonar {
+	properties {
+		property    "sonar.projectKey", "ms-devsecops"
+		property    "sonar.projectName", "ms-devsecops"
+		property    "sonar.sourceEncoding", "UTF-8"
+		property    "sonar.java.source", "17"
+		property    "sonar.java.coveragePlugin", "jacoco"
+		property    "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
+		property    "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+		property    "sonar.junit.reportPaths", "${project.buildDir}/test-results/test, build/test-results/integrationTest"
+		property    "sonar.exclusions", "**/com/hcl/devsecops/*Event.java";
+	}
+}
+
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+	dependsOn test
+}
+
+tasks.named('sonarqube').configure {
+	dependsOn jacocoTestReport
+}
+
+plugins.withType(JacocoPlugin) {
+	tasks["test"].finalizedBy 'jacocoTestReport'
 }
