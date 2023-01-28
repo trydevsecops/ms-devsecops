@@ -50,6 +50,7 @@ test {
 
 sonarqube {
 	properties {
+		property    "sonar.projectKey", "ms-devsecops"
 		property    "sonar.projectName", "ms-devsecops"
 		property    "sonar.sourceEncoding", "UTF-8"
 		property    "sonar.java.source", "17"
@@ -60,7 +61,7 @@ sonarqube {
 		property    "sonar.exclusions", "**/com/hcl/devsecops/*Event.java";
 	}
 }
-
+/*
 sonar {
 	properties {
 		property    "sonar.projectKey", "ms-devsecops"
@@ -74,7 +75,7 @@ sonar {
 		property    "sonar.exclusions", "**/com/hcl/devsecops/*Event.java";
 	}
 }
-
+*/
 
 jacocoTestReport {
 	reports {
