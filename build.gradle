@@ -8,6 +8,7 @@ plugins {
 }
 
 group = 'com.hcl.devsecops'
+archivesBaseName="ms-devsecops"
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
