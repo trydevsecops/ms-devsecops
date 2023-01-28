@@ -19,12 +19,12 @@ pipeline {
      }
     stage('sonarQube Analysis'){
 	  steps {
-             sh "gradle sonarqube "
+             sh "/opt/gradle/bin/gradle sonarqube "
        }
     }
     stage('Docker Build'){
 	  steps {
-             sh "docker build -t ms-devsecapps:latest"
+             sh "docker build . -t ms-devsecapps:latest"
        }
     }
 
