@@ -47,7 +47,7 @@ class MSApplicationTest {
         ContainerEvent event = containerEventRepository.save(containerEvent);
         assertEquals(event.getName(),"EVENT_ADD");
 */
-            mockMvc.perform(post("/eventds/").content(
+            mockMvc.perform(post("/events/").content(
                             "{\"name\": \"DEVICE_ADD\", \"eventSource\":\"IoTDevice 1\"}")
                     .contentType(MediaType.APPLICATION_JSON)
             ).andExpect(
@@ -57,14 +57,14 @@ class MSApplicationTest {
     @Test
     void testGetAllContainerEvent() throws Exception{
 
-        /*ContainerEvent containerEvent1 = new ContainerEvent("EVENT_ADD","IOT_DEVICE1");
+        ContainerEvent containerEvent1 = new ContainerEvent("EVENT_ADD","IOT_DEVICE1");
         containerEventRepository.save(containerEvent1);
         ContainerEvent containerEvent2 = new ContainerEvent("EVENT_UPDATE","IOT_DEVICE2");
         containerEventRepository.save(containerEvent2);
-        List<ContainerEvent> allContainerEvent = containerEventRepository.findAll();*/
+        List<ContainerEvent> allContainerEvent = containerEventRepository.findAll();
 
         mockMvc.perform(
-                get("/eventds/").contentType(MediaType.APPLICATION_JSON)).andExpect(
+                get("/events/").contentType(MediaType.APPLICATION_JSON)).andExpect(
                 status().isOk());
 
 
