@@ -13,13 +13,12 @@ pipeline {
     }
     stage('Build and Test'){
         steps {
-
-              sh './gradlew clean build'
+             sh "chmod +x gradlew && gradlew sonarqube "
         }
      }
     stage('sonarQube Analysis'){
 	  steps {
-             sh "./gradlew sonarqube "
+             sh "chmod +x gradlew && gradlew sonarqube "
        }
     }
     stage('Docker Build'){
