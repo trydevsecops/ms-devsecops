@@ -3,6 +3,9 @@ pipeline {
 
     environment{
         Repo_URL="https://github.com/trydevsecops/ms-devsecops.git"
+        DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')
+        IMAGE_NAME="ms-devsecapps"
+        VERSION="latest"
     }
 
  stages {
@@ -31,12 +34,28 @@ pipeline {
     }
     stage('Docker Build'){
 	  steps {
-             sh "docker build . -t ms-devsecapps:latest"
+             sh "docker build . -t $env.IMAGE_NAME:$env.VERSION"
        }
+    }
+    stage('Login to Container Registry') {
+          steps{
+    	        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+    	        echo 'Login Completed'
+          }
+    }
+    stage('Scan Container Image') {
+          steps{
+    	        sh 'docker scan $env.IMAGE_NAME'
+    	        echo 'Login Completed'
+          }
     }
 
 
-
-}
+  }
+  post{
+      always {
+        sh 'docker logout'
+      }
+  }
 
 }
