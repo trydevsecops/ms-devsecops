@@ -45,7 +45,7 @@ pipeline {
     }*/
     stage('Scan Container Image') {
           steps{
-    	        sh 'docker scan -f Dockerfile $env.IMAGE_NAME:$env.VERSION'
+    	        sh "docker scan -f Dockerfile $env.IMAGE_NAME:$env.VERSION --json --accept-license --"
     	        echo 'Docker Scan Completed'
           }
     }
