@@ -16,20 +16,20 @@
 
 package com.hcl.devsecops;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.http.MediaType;
+
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,22 +47,26 @@ public class MSRestApplicationTest {
 	}
 
 	@Test
+	public void contextLoads() {
+	}
+
+
+	@Test
 	public void shouldReturnRepositoryIndex() throws Exception {
 
 		mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk()).andExpect(
 				jsonPath("$._links.events").exists());
 	}
 
-/*
 	@Test
 	public void shouldCreateEntity() throws Exception {
 
 		mockMvc.perform(post("/events/").content(
-				"{\"name\": \"DEVICE_ADD\", \"eventSource\":\"IoTDevice 1\"}"))
-				.andExpect(status().isCreated())
-				.andReturn();
+				"{\"name\": \"DEVICE_ADD\", \"eventSource\":\"IoTDevice 1\"}")
+				.contentType(MediaType.APPLICATION_JSON)
+		).andExpect(
+						status().isOk());
 	}
-*/
 
 	@Test
 	public void shouldRetrieveEntity() throws Exception {
@@ -80,15 +84,17 @@ public class MSRestApplicationTest {
 	@Test
 	public void shouldQueryEntity() throws Exception {
 
-		mockMvc.perform(post("/events").content(
-				"{ \"name\": \"DEVICE_CLOSED\", \"eventSource\":\"IoTDevice 44\"}")).andExpect(
-						status().isCreated());
+		mockMvc.perform(post("/events/").content(
+				"{ \"name\": \"DEVICE_CLOSED\", \"eventSource\":\"DevSecOps\"}")
+				.contentType(MediaType.APPLICATION_JSON)
+		).andExpect(
+						status().isOk());
 
 		mockMvc.perform(
 				get("/events/search/findByName?name={name}", "DEVICE_CLOSED")).andExpect(
 						status().isOk()).andExpect(
-								jsonPath("$._embedded.events[0].name").value(
-										"DEVICE_CLOSED"));
+								jsonPath("$._embedded.events[0].eventSource").value(
+										"DevSecOps"));
 	}
 
 	@Test

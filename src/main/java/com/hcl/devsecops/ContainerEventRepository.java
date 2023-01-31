@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+
 @RepositoryRestResource(collectionResourceRel = "events", path = "events")
 public interface ContainerEventRepository extends PagingAndSortingRepository<ContainerEvent, Long>, CrudRepository<ContainerEvent,Long> {
 

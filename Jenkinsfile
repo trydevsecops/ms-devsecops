@@ -14,12 +14,12 @@ pipeline {
     stage('Build and Test'){
         steps {
 
-              sh '/opt/gradle/bin/gradle clean build'
+              sh './gradlew clean build'
         }
      }
     stage('sonarQube Analysis'){
 	  steps {
-             sh "/opt/gradle/bin/gradle sonarqube "
+             sh "./gradlew sonarqube "
        }
     }
     stage('Docker Build'){
