@@ -37,15 +37,16 @@ pipeline {
              sh "docker build . -t $env.IMAGE_NAME:$env.VERSION"
        }
     }
-   /* stage('Login to Container Registry') {
+    stage('Login to Container Registry') {
           steps{
-    	        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+    	        /*sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'*/
+    	        sh "docker login --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
     	        echo 'Login Completed'
           }
-    }*/
+    }
     stage('Scan Container Image') {
           steps{
-    	        sh "docker scan -f Dockerfile $env.IMAGE_NAME:$env.VERSION --json --accept-license --"
+    	        sh "docker scan $env.IMAGE_NAME:$env.VERSION --json "
     	        echo 'Docker Scan Completed'
           }
     }
