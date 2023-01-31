@@ -17,15 +17,25 @@ pipeline {
         }
      }
     stage('sonarQube Analysis'){
-	  steps {
-             sh "chmod +x ./gradlew && ./gradlew sonarqube "
-       }
+	        steps {
+	           withSonarQubeEnv('sonarqube'){
+                   sh "./gradlew sonarqube "
+	           }
+            }
+
+    }
+    stage("Quality Gate"){
+        steps {
+           waitForQualityGate abortPipeline: true
+        }
     }
     stage('Docker Build'){
 	  steps {
              sh "docker build . -t ms-devsecapps:latest"
        }
     }
+
+
 
 }
 
