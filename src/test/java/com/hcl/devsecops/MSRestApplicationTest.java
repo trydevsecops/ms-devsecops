@@ -22,13 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.MockedStatic;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.http.MediaType;
-
+import org.springframework.boot.SpringApplication;
 
 
 @SpringBootTest
@@ -49,7 +50,15 @@ public class MSRestApplicationTest {
 	@Test
 	public void contextLoads() {
 	}
-
+    @Test
+	//@PrepareForTest(SpringApplication.class)
+	public void main(){
+		//mockStatic(SpringApplication.class);
+		MSRestApplication.main(new String[]{});
+		//verifyStatic(SpringApplication.class);
+	//	SpringApplication.run(MSRestApplication.class, new String[]{"Event1", "Device 1"});
+		//assertThat(SpringApplication.run(MSRestApplication.class, new String[]{})).isEqualTo(null);
+	}
 
 	@Test
 	public void shouldReturnRepositoryIndex() throws Exception {
