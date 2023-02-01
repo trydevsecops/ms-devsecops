@@ -3,7 +3,8 @@ pipeline {
 
     environment{
         Repo_URL="https://github.com/trydevsecops/ms-devsecops.git"
-        CONTAINER_REGISTRY="https://jenkings.eastus.cloudapp.azure.com/devsecops/"
+        CONTAINER_REGISTRY_URL="https://jenkings.eastus.cloudapp.azure.com/devsecops"
+        CONTAINER_REGISTRY="jenkings.eastus.cloudapp.azure.com/devsecops"
         /*DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')*/
         DOCKERHUB_CREDENTIALS= credentials('harborcredentials')
         IMAGE_NAME="ms-devsecapps"
@@ -41,7 +42,7 @@ pipeline {
     }
     stage('Login to Container Registry') {
           steps{
-    	        sh "docker login $env.CONTAINER_REGISTRY --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
+    	        sh "docker login $env.CONTAINER_REGISTRY_URL --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
     	        echo 'Login Completed'
           }
     }
