@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Build and Test'){
         steps {
-             sh "chmod +x ./gradlew && ./gradlew build "
+             sh "chmod +x ./gradlew && ./gradlew clean build "
         }
      }
     stage('sonarQube Analysis'){
