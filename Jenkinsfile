@@ -3,7 +3,9 @@ pipeline {
 
     environment{
         Repo_URL="https://github.com/trydevsecops/ms-devsecops.git"
-        DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')
+        CONTAINER_REGISTRY="https://jenkings.eastus.cloudapp.azure.com/devsecops/"
+        /*DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials')*/
+        DOCKERHUB_CREDENTIALS= credentials('harborcredentials')
         IMAGE_NAME="ms-devsecapps"
         VERSION="latest"
     }
@@ -34,22 +36,31 @@ pipeline {
     }
     stage('Docker Build'){
 	  steps {
-             sh "docker build . -t $env.IMAGE_NAME:$env.VERSION"
+             sh "docker build . -t $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
        }
     }
     stage('Login to Container Registry') {
           steps{
-    	        /*sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'*/
-    	        sh "docker login --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
+    	        sh "docker login $env.CONTAINER_REGISTRY --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
     	        echo 'Login Completed'
           }
     }
-    stage('Scan Container Image') {
+    stage('Push Image to Container Registry') {
+          steps{
+                /*sh "docker tag  $env.IMAGE_NAME:$env.VERSION   $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
+                sh "docker tag ms-devsecapps:latest jenkings.eastus.cloudapp.azure.com/devsecops/ms-devsecapps:latest"
+                sh "docker push jenkings.eastus.cloudapp.azure.com/devsecops/ms-devsecapps:latest " */
+
+                sh "docker push $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
+    	        echo 'Image Pushed'
+          }
+    }
+    /*stage('Scan Container Image') {
           steps{
     	        sh "docker scan $env.IMAGE_NAME:$env.VERSION --json "
     	        echo 'Docker Scan Completed'
           }
-    }
+    }*/
 
 
   }
