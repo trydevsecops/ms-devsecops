@@ -71,7 +71,7 @@ pipeline {
 
   }
   post{
-      Success { findText alsoCheckConsoleOutput: true, refexp: 'ScanResult:Failed', unstableIfFound: true }
+      success { findText alsoCheckConsoleOutput: true, refexp: 'ScanResult:Failed', unstableIfFound: true }
       always  {  sh 'docker logout' }
   }
 
