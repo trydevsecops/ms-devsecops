@@ -47,9 +47,16 @@ pipeline {
     }
     stage('Validate Scanner Output') {
           steps{
-                  if (manager.logContains('.*ScanResult:Failed.*')) {
+               script
+               {
+                  if(manager.logContains('.*ScanResult:Failed.*')) {
+                    sh "echo Docker Image Scanning : Failed"
                     error("Build Got Failed due to Docker Image Scanning Result..")
                   }
+                  else{
+                    sh "echo Docker Image Scanning : Success"
+                  }
+               }
           }
     }
     stage('Login to Container Registry') {
