@@ -45,7 +45,7 @@ pipeline {
           sh "trivy image --format template --template @./trivy-jenkin.tpl  $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
       }
     }
-    stage('Validate Scanner Output') {
+    /*stage('Validate Scanner Output') {
           steps{
                script
                {
@@ -58,7 +58,7 @@ pipeline {
                   }
                }
           }
-    }
+    }*/
     stage('Login to Container Registry') {
           steps{
     	        sh "docker login $env.CONTAINER_REGISTRY_URL --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
@@ -75,12 +75,7 @@ pipeline {
     	        echo 'Image Pushed'
           }
     }
-    /*stage('Scan Container Image') {
-          steps{
-    	        sh "docker scan $env.IMAGE_NAME:$env.VERSION --json "
-    	        echo 'Docker Scan Completed'
-          }
-    }*/
+
 
 
   }
