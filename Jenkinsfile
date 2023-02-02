@@ -42,7 +42,7 @@ pipeline {
     }
     stage('Scan Docker Image'){
       steps{
-          sh "trivy image --format template --template '{{- \$critical := 0 }}{{- \$high := 0 }}{{- range . }}{{- range .Vulnerabilities }}{{- if  eq .Severity "CRITICAL" }}{{- \$critical = add \$critical 1 }}{{- end }}{{- if  eq .Severity "HIGH" }}{{- \$high = add \$high 1 }}{{- end }}{{- end }}{{- end }}{{- if  ge \$critical 1 }}Critical:{{ \$critical }}, ScanResult:Failed {{- end }}{{- if  ge \$high 1 }} High:{{ \$high }}, ScanResult:Failed{{- end }}'  ms-devsecapps:latest  $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION -f json"
+          sh "trivy image --format template --template '{{- \$critical := 0 }}{{- \$high := 0 }}{{- range . }}{{- range .Vulnerabilities }}{{- if  eq .Severity "CRITICAL" }}{{- \$critical = add \$critical 1 }}{{- end }}{{- if  eq .Severity "HIGH" }}{{- \$high = add \$high 1 }}{{- end }}{{- end }}{{- end }}{{- if  ge \$critical 1 }}Critical:{{ \$critical }}, ScanResult:Failed {{- end }}{{- if  ge \$high 1 }} High:{{ \$high }}, ScanResult:Failed{{- end }}'  $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
       }
     }
     stage('Login to Container Registry') {
