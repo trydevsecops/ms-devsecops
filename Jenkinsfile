@@ -40,6 +40,11 @@ pipeline {
              sh "docker build . -t $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
        }
     }
+    stage('Scan Docker Image'){
+      steps{
+          sh "trivy image --severity HIGH,CRITICAL  $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION -f json"
+      }
+    }
     stage('Login to Container Registry') {
           steps{
     	        sh "docker login $env.CONTAINER_REGISTRY_URL --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
