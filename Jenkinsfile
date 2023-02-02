@@ -45,6 +45,13 @@ pipeline {
           sh "trivy image --format template --template @./trivy-jenkin.tpl  $env.CONTAINER_REGISTRY/$env.IMAGE_NAME:$env.VERSION"
       }
     }
+    stage('Validate Scanner Output') {
+          steps{
+                  if (manager.logContains('.*ScanResult:Failed.*')) {
+                    error("Build Got Failed due to Docker Image Scanning Result..")
+                  }
+          }
+    }
     stage('Login to Container Registry') {
           steps{
     	        sh "docker login $env.CONTAINER_REGISTRY_URL --username $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW"
@@ -71,7 +78,6 @@ pipeline {
 
   }
   post{
-      success { findText alsoCheckConsoleOutput: true, refexp: 'ScanResult:Failed', unstableIfFound: true }
       always  {  sh 'docker logout' }
   }
 
